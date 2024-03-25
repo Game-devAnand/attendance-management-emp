@@ -10,6 +10,7 @@ class StatusPage extends StatefulWidget {
 }
 
 class _StatusPageState extends State<StatusPage> {
+  //to check and get the logged in user email for searching
   final String _userEmail = FirebaseAuth.instance.currentUser!.email!; // Assuming user is signed in
 
   @override
@@ -68,6 +69,7 @@ class _StatusPageState extends State<StatusPage> {
                         ),
                         const SizedBox(height: 8.0),
                         Text(
+                          // displaying status
                           'Status: $status',
                           style: const TextStyle(fontSize: 14),
                         ),

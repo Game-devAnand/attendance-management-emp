@@ -7,6 +7,7 @@ class ViewLeaveRequestsPage extends StatelessWidget {
       FirebaseFirestore.instance.collection('user_requests'); //newly added
 
 
+   //function for updating status
    Future<void> updateLeaveRequestStatus(String docId, String newStatus) async {
      final docRef = FirebaseFirestore.instance.collection('leave_requests').doc(docId);
      await docRef.update({'Status': newStatus});
@@ -102,6 +103,7 @@ class ViewLeaveRequestsPage extends StatelessWidget {
                           ),
                           ElevatedButton(
                               onPressed: () {
+                                // id obtained from leaveRequest
                                 updateLeaveRequestStatus(leaveRequest.id, 'Approved');
                               }, child: const Text('Accept')),
                           SizedBox(height: 4.0),
