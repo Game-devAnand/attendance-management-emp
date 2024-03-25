@@ -6,7 +6,14 @@ class ViewLeaveRequestsPage extends StatelessWidget {
    final CollectionReference userRequestRef =
       FirebaseFirestore.instance.collection('user_requests'); //newly added
 
-  @override
+
+   Future<void> updateLeaveRequestStatus(String docId, String newStatus) async {
+     final docRef = FirebaseFirestore.instance.collection('leave_requests').doc(docId);
+     await docRef.update({'Status': newStatus});
+   }
+
+
+   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -43,6 +50,7 @@ class ViewLeaveRequestsPage extends StatelessWidget {
                 final leaveRequest = leaveRequests[index];
                 final branch = leaveRequest['branch'] ?? '';
                 final reason = leaveRequest['reason'] ?? '';
+                final status = leaveRequest['Status'] ?? '';
                 final email = leaveRequest['email'] ?? '';
                 final timestamp = leaveRequest['timestamp'] != null
                     ? (leaveRequest['timestamp'] as Timestamp).toDate()
@@ -78,6 +86,14 @@ class ViewLeaveRequestsPage extends StatelessWidget {
                           Text(
                             'Email: $email',
                             style: TextStyle(fontSize: 14),
+                          ),SizedBox(height: 8.0),
+                          Text(
+                            'Branch: $branch',
+                            style: TextStyle(fontSize: 14),
+                          ),SizedBox(height: 8.0),
+                          Text(
+                            'Status: $status',
+                            style: TextStyle(fontSize: 14),
                           ),
                           SizedBox(height: 4.0),
                           Text(
@@ -85,10 +101,14 @@ class ViewLeaveRequestsPage extends StatelessWidget {
                             style: TextStyle(fontSize: 14),
                           ),
                           ElevatedButton(
-                              onPressed: () {}, child: Text('Accept')),
+                              onPressed: () {
+                                updateLeaveRequestStatus(leaveRequest.id, 'Approved');
+                              }, child: const Text('Accept')),
                           SizedBox(height: 4.0),
                           ElevatedButton(
-                              onPressed: () {}, child: Text('Reject')),
+                              onPressed: () {
+                                updateLeaveRequestStatus(leaveRequest.id, 'Rejected');
+                              }, child: const Text('Reject')),
                         ],
                       ),
                     ),
